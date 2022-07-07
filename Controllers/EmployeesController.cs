@@ -59,7 +59,7 @@ namespace Tax_Calculator_MVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Salary")] Employee employee)
+        public async Task<IActionResult> Create([Bind("Id,Name,Salary,Position")] Employee employee)
         {
             if (ModelState.IsValid)
             {
@@ -77,7 +77,6 @@ namespace Tax_Calculator_MVC.Controllers
             {
                 return NotFound();
             }
-
             var employee = await _context.Employee.FindAsync(id);
             if (employee == null)
             {
@@ -91,7 +90,7 @@ namespace Tax_Calculator_MVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Salary")] Employee employee)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Salary,Position")] Employee employee)
         {
             if (id != employee.Id)
             {
@@ -161,6 +160,45 @@ namespace Tax_Calculator_MVC.Controllers
         private bool EmployeeExists(int id)
         {
           return (_context.Employee?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+        //GET: Employees/Calculate/
+
+        public async Task<IActionResult> Calculate(int? id)
+        {
+            if (_context.Employee == null || id == 0)
+            {
+                return NotFound();
+            }
+            var employee = await _context.Employee.FirstOrDefaultAsync(m => m.Id == id);
+            return View(employee);
+        }
+        //POST: Employees/Calculated
+        [HttpPost, ActionName("Calculate")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Calculated(int id)
+        {
+           if (_context.Employee == null)
+           {
+               return NotFound();
+           }
+           var employee = await _context.Employee.FindAsync(id);
+           int preCalculatedSalary = employee.Salary;
+           double finalsalary = employee.Salary;
+           if (preCalculatedSalary > 1000)
+           {
+               double IncomeTax = (preCalculatedSalary - 1000) * 0.1;
+               double InsuranceTax = (preCalculatedSalary - 1000) * 0.15;
+               finalsalary = finalsalary - (IncomeTax+InsuranceTax);
+               employee.netoSalary = finalsalary;
+               _context.Update(employee);
+                await _context.SaveChangesAsync();
+                return View(employee);
+           }
+            employee.netoSalary = finalsalary;
+            _context.Update(employee);
+            await _context.SaveChangesAsync();
+            return View(employee);
+           
         }
     }
 }

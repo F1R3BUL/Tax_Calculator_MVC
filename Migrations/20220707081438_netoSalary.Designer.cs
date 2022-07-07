@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tax_Calculator_MVC.Data;
 
@@ -10,9 +11,10 @@ using Tax_Calculator_MVC.Data;
 namespace Tax_Calculator_MVC.Migrations
 {
     [DbContext(typeof(Tax_Calculator_MVCContext))]
-    partial class Tax_Calculator_MVCContextModelSnapshot : ModelSnapshot
+    [Migration("20220707081438_netoSalary")]
+    partial class netoSalary
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

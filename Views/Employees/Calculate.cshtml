@@ -1,16 +1,16 @@
 ﻿@model Tax_Calculator_MVC.Models.Employee
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Calculate";
 }
 
-<h1>Edit</h1>
+<h1>Calculate</h1>
 
 <h4>Employee</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Calculate">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
@@ -24,12 +24,12 @@
                 <span asp-validation-for="Salary" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Position" class="control-label"></label>
-                <input asp-for="Position" class="form-control" />
-                <span asp-validation-for="Position" class="text-danger"></span>
+                <label asp-for="netoSalary" class="control-label"></label>
+                <input asp-for="netoSalary" class="form-control" />
+                <span asp-validation-for="netoSalary" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Calculate" class="btn btn-primary" />
             </div>
         </form>
     </div>
