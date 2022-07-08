@@ -15,22 +15,23 @@ namespace Tax_Calculator_MVC.Controllers
     {
         private readonly ITaxCalculatorService _taxCalculatorService;
         private readonly Tax_Calculator_MVCContext _context;
-        public EmployeesController(ITaxCalculatorService _taxCalculatorService,Tax_Calculator_MVCContext context)
+        private readonly IEmptyDB _emptyDB;
+        public EmployeesController(ITaxCalculatorService _taxCalculatorService, Tax_Calculator_MVCContext context, IEmptyDB emptyDB)
         {
             this._context = context;
             this._taxCalculatorService = _taxCalculatorService;
+            this._emptyDB = emptyDB;
         }
 
         // GET: Employees
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string SearchString)
         {
-            //  var aaa = this.taxCalculatorService.Calculator();
-          //var employees = from e in _context.Employee select e;
-          //if(!String.IsNullOrEmpty(SearchString))
-          //{
-          //    employees = employees.Where(e => e.Name!.Contains(SearchString));
-          //}
-            return View(_context.Employee);                  
+            var employees = from e in _context.Employee select e;
+            if(!String.IsNullOrEmpty(SearchString))
+            {
+                employees = employees.Where(e => e.Name!.Contains(SearchString));
+            }
+            return View(employees);
         }
 
         // GET: Employees/Details/5
@@ -72,57 +73,6 @@ namespace Tax_Calculator_MVC.Controllers
             }
             return View(employee);
         }
-
-        // GET: Employees/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.Employee == null)
-            {
-                return NotFound();
-            }
-            var employee = await _context.Employee.FindAsync(id);
-            if (employee == null)
-            {
-                return NotFound();
-            }
-            return View(employee);
-        }
-
-        // POST: Employees/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Salary,Position")] EmployeeVM employee)
-        {
-            if (id != employee.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(employee);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!EmployeeExists(employee.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(employee);
-        }
-
         // GET: Employees/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -155,14 +105,14 @@ namespace Tax_Calculator_MVC.Controllers
             {
                 _context.Employee.Remove(employee);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool EmployeeExists(int id)
         {
-          return (_context.Employee?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Employee?.Any(e => e.Id == id)).GetValueOrDefault();
         }
         //GET: Employees/Calculate/
 
@@ -204,9 +154,14 @@ namespace Tax_Calculator_MVC.Controllers
                         throw;
                     }
                 }
-                return View(employee);                
-            }            
+                return View(employee);
+            }
             return View(employee);
+        }
+        public async Task<IActionResult> BOOOM()
+        {
+            _emptyDB.EmptyDatabase();
+            return RedirectToAction(nameof(Index));
         }
     }
 }

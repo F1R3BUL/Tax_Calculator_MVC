@@ -13,14 +13,19 @@
 <form asp-controller="Employees" asp-action="Index"> 
     <p>
         Title: <input type="Text" name="SearchString"/>
-        <input type="submit" value="Filter"/>
+               <input type="submit" value="Filter"/>
+    </p>
+</form>
+<form asp-controller="Employees" asp-action="BOOOM">
+    <p>
+     <button type="submit" value="BOOOM">BOOOM</button>
     </p>
 </form>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+               @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Salary)
@@ -29,7 +34,7 @@
                 @Html.DisplayNameFor(model => model.Position)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.netoSalary)
+                Salary after taxes
             </th>
             <th></th>
         </tr>
@@ -50,10 +55,9 @@
                 @Html.DisplayFor(modelItem => item.netoSalary)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
-                <a asp-action="Calculate" asp-route-id="@item.Id">Calculate</a>
+                <a asp-action="Calculate" asp-route-id="@item.Id">Calculate/Edit</a>
             </td>
         </tr>
 }

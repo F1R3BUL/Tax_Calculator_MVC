@@ -1,43 +1,1 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Tax_Calculator_MVC.Data;
-using Tax_Calculator_MVC.Interfaces;
-using Tax_Calculator_MVC.Services;
-using Tax_Calculator_MVC.ViewModel;
-
-var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<Tax_Calculator_MVCContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Tax_Calculator_MVCContext") ?? throw new InvalidOperationException("Connection string 'Tax_Calculator_MVCContext' not found.")));
-
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<ITaxCalculatorService, TaxCalculatorService>();
-builder.Services.AddScoped<IEmployee, EmployeeVM>();
-
-var app = builder.Build();
-
-using(var scope = app.Services.CreateScope())
-// Configure the HTTP request pipeline.
-{
-    var services = scope.ServiceProvider;
-    SeedData.Initialize(services);
-}
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
-
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-
-app.UseRouting();
-
-app.UseAuthorization();
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
-app.Run();
+using Microsoft.EntityFrameworkCore;using Microsoft.Extensions.DependencyInjection;using Tax_Calculator_MVC.Data;using Tax_Calculator_MVC.Interfaces;using Tax_Calculator_MVC.Services;using Tax_Calculator_MVC.ViewModel;var builder = WebApplication.CreateBuilder(args);builder.Services.AddDbContext<Tax_Calculator_MVCContext>(options =>    options.UseSqlServer(builder.Configuration.GetConnectionString("Tax_Calculator_MVCContext") ?? throw new InvalidOperationException("Connection string 'Tax_Calculator_MVCContext' not found.")));// Add services to the container.builder.Services.AddControllersWithViews();builder.Services.AddScoped<ITaxCalculatorService, TaxCalculatorService>();builder.Services.AddScoped<IEmployee, EmployeeVM>();builder.Services.AddScoped<IEmptyDB, EmptyDBService>();var app = builder.Build();using(var scope = app.Services.CreateScope())// Configure the HTTP request pipeline.{    var services = scope.ServiceProvider;    //Fills Database with Random Infornation if its Empty    SeedData.Initialize(services);}if (!app.Environment.IsDevelopment()){    app.UseExceptionHandler("/Home/Error");    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.    app.UseHsts();}app.UseHttpsRedirection();app.UseStaticFiles();app.UseRouting();app.UseAuthorization();app.MapControllerRoute(    name: "default",    pattern: "{controller=Home}/{action=Index}/{id?}");app.Run();
