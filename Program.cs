@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Tax_Calculator_MVC.Data;
 using Tax_Calculator_MVC.Interfaces;
-using Tax_Calculator_MVC.Models;
 using Tax_Calculator_MVC.Services;
 using Tax_Calculator_MVC.ViewModel;
 
