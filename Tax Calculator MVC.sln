@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tax Calculator MVC", "Tax Calculator MVC.csproj", "{89A58256-8CA5-4F93-9ABB-9E92CE78319C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tax Calculator MVC", "Tax Calculator MVC.csproj", "{89A58256-8CA5-4F93-9ABB-9E92CE78319C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testts", "..\Testts\Testts.csproj", "{3B9DC379-E290-4F3F-B154-255F7BDF4D70}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{89A58256-8CA5-4F93-9ABB-9E92CE78319C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89A58256-8CA5-4F93-9ABB-9E92CE78319C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89A58256-8CA5-4F93-9ABB-9E92CE78319C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B9DC379-E290-4F3F-B154-255F7BDF4D70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B9DC379-E290-4F3F-B154-255F7BDF4D70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B9DC379-E290-4F3F-B154-255F7BDF4D70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B9DC379-E290-4F3F-B154-255F7BDF4D70}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
