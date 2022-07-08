@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Tax_Calculator_MVC.Models.Employee>
+﻿@model IEnumerable<Tax_Calculator_MVC.ViewModel.EmployeeVM>
 
 @{
     ViewData["Title"] = "Index";
@@ -10,7 +10,7 @@
     <a asp-action="Create">Create New</a>
 </p>
 
-<form asp-controller="Employees" asp-action="Index">
+<form asp-controller="Employees" asp-action="Index"> 
     <p>
         Title: <input type="Text" name="SearchString"/>
         <input type="submit" value="Filter"/>
@@ -52,7 +52,7 @@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
                 <a asp-action="Calculate" asp-route-id="@item.Id">Calculate</a>
             </td>
         </tr>

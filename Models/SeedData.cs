@@ -3,11 +3,14 @@ using Tax_Calculator_MVC.Data;
 using System;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
+using Tax_Calculator_MVC.ViewModel;
+using Tax_Calculator_MVC.Interfaces;
 
 namespace Tax_Calculator_MVC.Models
 {
     public class SeedData
     {
+        private readonly ITaxCalculatorService _taxCalculatorService;
         public static void Initialize(IServiceProvider serviceProvider)
         {
             using (var context = new Tax_Calculator_MVCContext(serviceProvider.GetRequiredService<
@@ -30,7 +33,7 @@ namespace Tax_Calculator_MVC.Models
                     string RandomName = new String(name);
                     int randomSalary = new Random().Next(0, 100000);
                     context.AddRange(
-                        new Employee
+                        new EmployeeVM
                         {
                             Name = @""+RandomName+"",
                             Salary = randomSalary,

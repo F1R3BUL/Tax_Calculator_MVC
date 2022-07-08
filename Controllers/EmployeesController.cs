@@ -6,28 +6,31 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Tax_Calculator_MVC.Data;
-using Tax_Calculator_MVC.Models;
+using Tax_Calculator_MVC.Interfaces;
+using Tax_Calculator_MVC.ViewModel;
 
 namespace Tax_Calculator_MVC.Controllers
 {
     public class EmployeesController : Controller
     {
+        private readonly ITaxCalculatorService _taxCalculatorService;
         private readonly Tax_Calculator_MVCContext _context;
-
-        public EmployeesController(Tax_Calculator_MVCContext context)
+        public EmployeesController(ITaxCalculatorService _taxCalculatorService,Tax_Calculator_MVCContext context)
         {
-            _context = context;
+            this._context = context;
+            this._taxCalculatorService = _taxCalculatorService;
         }
 
         // GET: Employees
-        public async Task<IActionResult> Index(string SearchString)
+        public async Task<IActionResult> Index()
         {
-            var employees = from e in _context.Employee select e;
-            if(!String.IsNullOrEmpty(SearchString))
-            {
-                employees = employees.Where(e => e.Name!.Contains(SearchString));
-            }
-            return View(await employees.ToListAsync());                  
+            //  var aaa = this.taxCalculatorService.Calculator();
+          //var employees = from e in _context.Employee select e;
+          //if(!String.IsNullOrEmpty(SearchString))
+          //{
+          //    employees = employees.Where(e => e.Name!.Contains(SearchString));
+          //}
+            return View(_context.Employee);                  
         }
 
         // GET: Employees/Details/5
@@ -59,7 +62,7 @@ namespace Tax_Calculator_MVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Salary,Position")] Employee employee)
+        public async Task<IActionResult> Create([Bind("Id,Name,Salary,Position")] EmployeeVM employee)
         {
             if (ModelState.IsValid)
             {
@@ -90,7 +93,7 @@ namespace Tax_Calculator_MVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Salary,Position")] Employee employee)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Salary,Position")] EmployeeVM employee)
         {
             if (id != employee.Id)
             {
@@ -163,42 +166,47 @@ namespace Tax_Calculator_MVC.Controllers
         }
         //GET: Employees/Calculate/
 
-        public async Task<IActionResult> Calculate(int? id)
+        public async Task<IActionResult> Calculate(int id)
         {
-            if (_context.Employee == null || id == 0)
+
+            if (_context.Employee == null)
             {
                 return NotFound();
             }
-            var employee = await _context.Employee.FirstOrDefaultAsync(m => m.Id == id);
+            var employee = await _context.Employee.FindAsync(id);
             return View(employee);
         }
         //POST: Employees/Calculated
         [HttpPost, ActionName("Calculate")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Calculated(int id)
+        public async Task<IActionResult> Calculated(int id, [Bind("Id,Name,Salary,Position")] EmployeeVM employee)
         {
-           if (_context.Employee == null)
-           {
-               return NotFound();
-           }
-           var employee = await _context.Employee.FindAsync(id);
-           int preCalculatedSalary = employee.Salary;
-           double finalsalary = employee.Salary;
-           if (preCalculatedSalary > 1000)
-           {
-               double IncomeTax = (preCalculatedSalary - 1000) * 0.1;
-               double InsuranceTax = (preCalculatedSalary - 1000) * 0.15;
-               finalsalary = finalsalary - (IncomeTax+InsuranceTax);
-               employee.netoSalary = finalsalary;
-               _context.Update(employee);
-                await _context.SaveChangesAsync();
-                return View(employee);
-           }
-            employee.netoSalary = finalsalary;
-            _context.Update(employee);
-            await _context.SaveChangesAsync();
+            if (id != employee.Id)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                employee = _taxCalculatorService.Calculator(employee);
+                try
+                {
+                    _context.Update(employee);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!EmployeeExists(employee.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return View(employee);                
+            }            
             return View(employee);
-           
         }
     }
 }

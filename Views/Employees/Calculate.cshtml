@@ -1,4 +1,4 @@
-﻿@model Tax_Calculator_MVC.Models.Employee
+﻿@model Tax_Calculator_MVC.ViewModel.EmployeeVM
 
 @{
     ViewData["Title"] = "Calculate";
@@ -27,6 +27,11 @@
                 <label asp-for="netoSalary" class="control-label"></label>
                 <input asp-for="netoSalary" class="form-control" />
                 <span asp-validation-for="netoSalary" class="text-danger"></span>
+                <div class="form-group">
+                <label asp-for="Position" class="control-label"></label>
+                <input asp-for="Position" class="form-control" />
+                <span asp-validation-for="Position" class="text-danger"></span>
+            </div>
             </div>
             <div class="form-group">
                 <input type="submit" value="Calculate" class="btn btn-primary" />

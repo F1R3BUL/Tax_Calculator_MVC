@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Tax_Calculator_MVC.Models;
-
+using Tax_Calculator_MVC.Interfaces;
+using Tax_Calculator_MVC.ViewModel;
 namespace Tax_Calculator_MVC.Data
 {
     public class Tax_Calculator_MVCContext : DbContext
@@ -14,6 +14,6 @@ namespace Tax_Calculator_MVC.Data
         {
         }
 
-        public DbSet<Tax_Calculator_MVC.Models.Employee>? Employee { get; set; }
+        public DbSet<EmployeeVM>? Employee { get; set; }
     }
 }

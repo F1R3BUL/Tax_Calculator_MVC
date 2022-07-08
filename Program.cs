@@ -1,7 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Tax_Calculator_MVC.Data;
+using Tax_Calculator_MVC.Interfaces;
 using Tax_Calculator_MVC.Models;
+using Tax_Calculator_MVC.Services;
+using Tax_Calculator_MVC.ViewModel;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<Tax_Calculator_MVCContext>(options =>
@@ -9,6 +12,8 @@ builder.Services.AddDbContext<Tax_Calculator_MVCContext>(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<ITaxCalculatorService, TaxCalculatorService>();
+builder.Services.AddScoped<IEmployee, EmployeeVM>();
 
 var app = builder.Build();
 
